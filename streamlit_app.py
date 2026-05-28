@@ -37,6 +37,13 @@ if uploaded_file is not None:
 
 # Sidebar
 st.sidebar.title("⚙️ Settings")
+st.sidebar.markdown("---")
+st.sidebar.subheader("📎 Upload your letter")
+uploaded_file = st.sidebar.file_uploader(
+    "Upload a government letter",
+    type=["pdf", "png", "jpg", "jpeg"],
+    help="Photo or PDF of any letter you received"
+)
 provider = st.sidebar.radio(
     "Choose AI Provider:",
     ["Claude API (Better quality)", "Ollama Llama3 (Free, Local)"]
