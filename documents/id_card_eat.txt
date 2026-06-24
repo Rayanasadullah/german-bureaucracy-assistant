@@ -1,0 +1,77 @@
+ID CARDS AND ELECTRONIC RESIDENCE TITLE (eAT) IN GERMANY
+Source: BAMF, Bundesdruckerei, iamexpat.de (2025-2026)
+
+GERMAN ID CARD (PERSONALAUSWEIS) — FOR GERMAN CITIZENS AND EU NATIONALS:
+The German ID card (Personalausweis) is for German citizens only. EU/EEA citizens can use their home country's national ID card or passport to prove their identity in Germany. Germany accepts valid EU national ID cards for most administrative purposes.
+
+ELECTRONIC RESIDENCE TITLE (eAT — ELEKTRONISCHER AUFENTHALTSTITEL) — FOR NON-EU NATIONALS:
+Since September 2011, all residence permits for non-EU nationals in Germany are issued as a plastic credit card with an embedded chip. This is called the elektronischer Aufenthaltstitel (eAT). Paper residence titles are no longer valid as of August 31, 2021.
+
+WHAT DOES THE eAT LOOK LIKE?
+The eAT card looks like a credit card. It contains:
+- Your full name and date of birth.
+- Your nationality.
+- Your passport photo.
+- Your fingerprints (stored on the chip).
+- The type of residence permit you hold (e.g. work permit, study permit, EU Blue Card).
+- The validity date of your permit.
+- Any restrictions or conditions on your permit (e.g. work authorization).
+- An online identification function (eID).
+
+eID FUNCTION ON THE eAT:
+The chip on your eAT card can be used for secure online identification. This is called the eID function. You can use it to:
+- Prove your identity online with German government services.
+- Access some online administrative processes (e.g. online Ummeldung in some cities).
+- Sign documents electronically.
+To use the eID function, you need:
+- An NFC-capable smartphone or a card reader.
+- The AusweisApp (free app from the official German government).
+- Your 6-digit PIN (sent separately by post when you collect your eAT).
+
+HOW TO GET YOUR eAT:
+1. Apply for your residence permit at your local Foreigners' Office (Ausländerbehörde).
+2. Bring all required documents (passport, registration certificate, health insurance, proof of finances, etc.).
+3. Your biometric data (photo and fingerprints) is recorded at the office.
+4. The eAT is produced by the Bundesdruckerei (Federal Printing Office) — takes 2-3 weeks.
+5. You will receive a notification to collect your eAT card in person at the Foreigners' Office.
+6. Your PIN code is sent separately by post. You need this to activate the eID function.
+
+IMPORTANT: You must pick up your eAT card IN PERSON. Someone else cannot collect it for you.
+
+WHILE WAITING FOR YOUR eAT:
+You will receive a Fiktionsbescheinigung (fictional certificate) — a temporary paper document proving you are in Germany legally while your eAT is being produced. This allows you to continue working and living in Germany.
+
+WHAT INFORMATION IS ON THE BACK OF THE eAT?
+The back of the card shows the conditions of your permit, for example:
+- "Erwerbstätigkeit erlaubt" = Employment allowed (you can work freely)
+- "Beschäftigung nur mit Genehmigung der Ausländerbehörde" = Employment only with permission of the Foreigners' Office
+- "Selbständige Tätigkeit nicht gestattet" = Self-employment not permitted
+Always read the back of your card carefully to know what you are allowed to do!
+
+RENEWING YOUR eAT:
+- Your eAT expires when your residence permit expires.
+- The Foreigners' Office does NOT automatically remind you.
+- Apply for renewal well before expiry — at least 6-8 weeks before.
+- You must apply in person at the Foreigners' Office (Ausländerbehörde).
+- Bring your current eAT, valid passport, registration certificate, and proof that your situation is unchanged (employment contract, health insurance, etc.).
+
+LOST OR STOLEN eAT:
+If your eAT is lost or stolen:
+1. Report it to the police immediately and get a police report (Anzeige).
+2. Contact your local Foreigners' Office to apply for a replacement.
+3. Bring your police report and passport to the appointment.
+There is a fee to replace a lost card (usually similar to the original application fee).
+
+EU BLUE CARD (also an eAT):
+The EU Blue Card is a type of residence permit for highly-skilled workers and is also issued as an eAT card. It has the words "EU Blue Card" printed on it.
+
+DIFFERENCE BETWEEN RESIDENCE PERMIT AND VISA:
+- A visa is a sticker in your passport and is temporary.
+- A residence permit (eAT) is the plastic card and is the official long-term permission to stay.
+- When you first arrive in Germany with a national visa, you must convert it to a residence permit (eAT) at the Foreigners' Office within the validity of your visa.
+
+FOREIGNERS' OFFICE (AUSLÄNDERBEHÖRDE):
+This is the office that handles all residence permit matters for non-EU nationals. Every major city and district has one. Find yours at: bamf.de (Ausländerbehörde locator).
+
+ELECTRONIC RESIDENCE PERMIT (eRP) FOR EU CITIZENS IN GERMANY:
+EU citizens registered in Germany can request a declaratory residence document — but this is optional for most EU nationals, as they do not legally require a residence permit. Ask your local Bürgeramt or Ausländerbehörde for details.

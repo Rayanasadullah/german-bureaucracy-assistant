@@ -5,6 +5,7 @@ import fitz
 import os
 import ollama
 import base64
+from openai import OpenAI
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -46,10 +47,11 @@ uploaded_file = st.sidebar.file_uploader(
 )
 provider = st.sidebar.radio(
     "Choose AI Provider:",
-    ["Claude API (Better quality)", "Ollama Llama3 (Free, Local)"]
+    ["Claude API (Better quality)", "OpenAI ChatGPT API", "Ollama Llama3 (Free, Local)"]
 )
 
 api_key = None
+openai_api_key = None
 
 if provider == "Claude API (Better quality)":
     st.sidebar.markdown("---")
@@ -62,7 +64,6 @@ if provider == "Claude API (Better quality)":
         st.sidebar.success("✅ API key entered")
     else:
         st.sidebar.warning("⚠️ Please enter your API key")
-    
     st.sidebar.markdown("---")
     st.sidebar.info("""
 🔒 **Your API key is secure:**
@@ -71,6 +72,32 @@ if provider == "Claude API (Better quality)":
 - Deleted when you close the tab
 - We never see or log your key
 """)
+
+elif provider == "OpenAI ChatGPT API":
+    st.sidebar.markdown("---")
+    openai_api_key = st.sidebar.text_input(
+        "Enter your OpenAI API key:",
+        type="password",
+        placeholder="sk-..."
+    )
+    openai_model = st.sidebar.selectbox(
+        "Choose ChatGPT model:",
+        ["gpt-4o-mini", "gpt-4o", "gpt-4-turbo", "gpt-3.5-turbo"],
+        index=0
+    )
+    if openai_api_key:
+        st.sidebar.success("✅ OpenAI API key entered")
+    else:
+        st.sidebar.warning("⚠️ Please enter your OpenAI API key")
+    st.sidebar.markdown("---")
+    st.sidebar.info("""
+🔒 **Your API key is secure:**
+- Never stored on any server
+- Only used in your browser session
+- Deleted when you close the tab
+- We never see or log your key
+""")
+
 else:
     st.sidebar.success("✅ Ollama - 100% Local")
     st.sidebar.info("""
@@ -81,13 +108,16 @@ else:
 - Your data never leaves your device
 """)
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DOCS_DIR = os.path.join(BASE_DIR, "documents")
+
 @st.cache_resource
 def load_rag():
     chroma_client = chromadb.Client()
     collection = chroma_client.create_collection(name="documents")
-    
-    for filename in os.listdir("documents"):
-        filepath = f"documents/{filename}"
+
+    for filename in os.listdir(DOCS_DIR):
+        filepath = os.path.join(DOCS_DIR, filename)
         text = ""
         
         if filename.endswith(".txt"):
@@ -126,12 +156,23 @@ def get_response_claude(messages, context, key, uploaded_text="", image_data=Non
     
     system = f"""You are a friendly assistant helping immigrants in Germany.
 RULES:
-1. Answer SHORT and simple - maximum 3 lines
+1. Answer SHORT and simple - maximum 3-4 lines
 2. Only answer from the context below or the uploaded letter
-3. End every answer with: Would you like more details?
-4. If answer not in context say: I could not find this information
-5. Be friendly and simple
-6. Always explain in simple language
+3. Be friendly and simple
+4. Always explain in simple language
+5. If answer not in context say: I could not find this information
+6. ALWAYS end every answer with a relevant official German government link using this format:
+   "📌 Official source: [title] → [URL]"
+   Choose the most relevant link from this list based on the topic:
+   - Registration (Anmeldung), city registration, Bürgeramt: https://www.bamf.de/EN/Themen/MigrationAufenthalt/ZuwandererDrittstaaten/Migrathek/ErsteDreiMonate/erste-drei-monate-node.html
+   - Residence permit, visa, Aufenthaltstitel, Ausländerbehörde, eAT, Blue Card, Opportunity Card: https://www.bamf.de/EN/Themen/MigrationAufenthalt/ZuwandererDrittstaaten/zuwandererdrittstaaten-node.html
+   - Immigration to Germany, moving to Germany, first steps, skilled workers: https://www.make-it-in-germany.com/en/
+   - Jobcenter, Bürgergeld, unemployment benefits, ALG I, social welfare: https://www.jobcenter.digital
+   - Employment Agency, job search, ALG I, Arbeitsagentur: https://www.arbeitsagentur.de/en/
+   - Health insurance, Krankenversicherung, GKV: https://www.bundesgesundheitsministerium.de/en/health-insurance.html
+   - Integration course, German language course: https://www.bamf.de/EN/Themen/Integration/ZugewanderteTeilnehmende/Integrationskurse/integrationskurse-node.html
+   - Tax ID, Steuer, Finanzamt: https://www.bzst.bund.de/EN/Privatpersonen/SteuerlicheIdentifikationsnummer/steuerlicheidentifikationsnummer_node.html
+   - General official Germany information portal: https://www.germany.info
 
 RELEVANT CONTEXT FROM OFFICIAL DOCUMENTS:
 {context}
@@ -173,14 +214,65 @@ USER'S UPLOADED LETTER:
     )
     return response.content[0].text
 
+def get_response_openai(messages, context, key, model="gpt-4o-mini", uploaded_text=""):
+    client = OpenAI(api_key=key)
+
+    system = f"""You are a friendly assistant helping immigrants in Germany.
+RULES:
+1. Answer SHORT and simple - maximum 3-4 lines
+2. Only answer from the context below or the uploaded letter
+3. Be friendly and simple
+4. Always explain in simple language
+5. If answer not in context say: I could not find this information
+6. ALWAYS end every answer with a relevant official German government link using this format:
+   "📌 Official source: [title] → [URL]"
+   Choose the most relevant link from this list based on the topic:
+   - Registration (Anmeldung), city registration, Bürgeramt: https://www.bamf.de/EN/Themen/MigrationAufenthalt/ZuwandererDrittstaaten/Migrathek/ErsteDreiMonate/erste-drei-monate-node.html
+   - Residence permit, visa, Aufenthaltstitel, Ausländerbehörde, eAT, Blue Card, Opportunity Card: https://www.bamf.de/EN/Themen/MigrationAufenthalt/ZuwandererDrittstaaten/zuwandererdrittstaaten-node.html
+   - Immigration to Germany, moving to Germany, first steps, skilled workers: https://www.make-it-in-germany.com/en/
+   - Jobcenter, Bürgergeld, unemployment benefits, ALG I, social welfare: https://www.jobcenter.digital
+   - Employment Agency, job search, ALG I, Arbeitsagentur: https://www.arbeitsagentur.de/en/
+   - Health insurance, Krankenversicherung, GKV: https://www.bundesgesundheitsministerium.de/en/health-insurance.html
+   - Integration course, German language course: https://www.bamf.de/EN/Themen/Integration/ZugewanderteTeilnehmende/Integrationskurse/integrationskurse-node.html
+   - Tax ID, Steuer, Finanzamt: https://www.bzst.bund.de/EN/Privatpersonen/SteuerlicheIdentifikationsnummer/steuerlicheidentifikationsnummer_node.html
+   - General official Germany information portal: https://www.germany.info
+
+RELEVANT CONTEXT FROM OFFICIAL DOCUMENTS:
+{context}
+
+USER'S UPLOADED LETTER:
+{uploaded_text if uploaded_text else "No letter uploaded"}"""
+
+    openai_messages = [{"role": "system", "content": system}]
+    for msg in messages:
+        openai_messages.append(msg)
+
+    response = client.chat.completions.create(
+        model=model,
+        max_tokens=1024,
+        messages=openai_messages
+    )
+    return response.choices[0].message.content
+
 def get_response_ollama(messages, context, uploaded_text=""):
     system = f"""You are a friendly assistant helping immigrants in Germany.
 RULES:
-1. Answer SHORT and simple - maximum 3 lines
+1. Answer SHORT and simple - maximum 3-4 lines
 2. Only answer from the context below
-3. End every answer with: Would you like more details?
+3. Be friendly and simple
 4. If answer not in context say: I could not find this information
-5. Be friendly and simple
+5. ALWAYS end every answer with a relevant official German government link using this format:
+   "📌 Official source: [title] → [URL]"
+   Choose the most relevant link from this list based on the topic:
+   - Registration (Anmeldung), city registration, Bürgeramt: https://www.bamf.de/EN/Themen/MigrationAufenthalt/ZuwandererDrittstaaten/Migrathek/ErsteDreiMonate/erste-drei-monate-node.html
+   - Residence permit, visa, Aufenthaltstitel, Ausländerbehörde, eAT, Blue Card, Opportunity Card: https://www.bamf.de/EN/Themen/MigrationAufenthalt/ZuwandererDrittstaaten/zuwandererdrittstaaten-node.html
+   - Immigration to Germany, moving to Germany, first steps, skilled workers: https://www.make-it-in-germany.com/en/
+   - Jobcenter, Bürgergeld, unemployment benefits, ALG I, social welfare: https://www.jobcenter.digital
+   - Employment Agency, job search, ALG I, Arbeitsagentur: https://www.arbeitsagentur.de/en/
+   - Health insurance, Krankenversicherung, GKV: https://www.bundesgesundheitsministerium.de/en/health-insurance.html
+   - Integration course, German language course: https://www.bamf.de/EN/Themen/Integration/ZugewanderteTeilnehmende/Integrationskurse/integrationskurse-node.html
+   - Tax ID, Steuer, Finanzamt: https://www.bzst.bund.de/EN/Privatpersonen/SteuerlicheIdentifikationsnummer/steuerlicheidentifikationsnummer_node.html
+   - General official Germany information portal: https://www.germany.info
 
 RELEVANT CONTEXT:
 {context}
@@ -208,9 +300,11 @@ for message in st.session_state.messages:
         st.write(message["content"])
 
 if prompt := st.chat_input("Ask about German bureaucracy..."):
-    
+
     if provider == "Claude API (Better quality)" and not api_key:
         st.error("⚠️ Please enter your Anthropic API key in the sidebar first!")
+    elif provider == "OpenAI ChatGPT API" and not openai_api_key:
+        st.error("⚠️ Please enter your OpenAI API key in the sidebar first!")
     else:
         with st.chat_message("user"):
             st.write(prompt)
@@ -239,6 +333,14 @@ if prompt := st.chat_input("Ask about German bureaucracy..."):
                 uploaded_text,
                 image_data,
                 image_type
+            )
+        elif provider == "OpenAI ChatGPT API":
+            response = get_response_openai(
+                st.session_state.messages,
+                context,
+                openai_api_key,
+                openai_model,
+                uploaded_text
             )
         else:
             response = get_response_ollama(
