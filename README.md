@@ -21,12 +21,12 @@ Every answer ends with a 📌 link to the **official German government website**
 
 ## Features
 
-- 💬 **Chat interface** — Ask questions in natural language
-- 📄 **Upload documents** — Upload a government letter (PDF or image) and ask questions about it
-- 🤖 **Three AI providers** — Choose between Claude (Anthropic), ChatGPT (OpenAI), or Ollama (free, runs locally)
-- 🔍 **RAG pipeline** — Answers are grounded in official documents, not just AI guesswork
-- 📌 **Official sources** — Every answer links to a relevant German government website
-- 🔒 **Privacy-first** — API keys are never stored; Ollama option runs 100% on your own computer
+- **Chat interface** — Ask questions in natural language
+- **Upload documents** — Upload a government letter (PDF or image) and ask questions about it
+- **Three AI providers** — Choose between Claude (Anthropic), ChatGPT (OpenAI), or Ollama (free, runs locally)
+- **RAG pipeline** — Answers are grounded in official documents, not just AI guesswork
+- **Official sources** — Every answer links to a relevant German government website
+- **Privacy-first** — API keys are never stored; Ollama option runs 100% on your own computer
 
 ---
 
