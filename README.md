@@ -17,6 +17,8 @@ Moving to Germany involves a lot of paperwork and confusing processes. This assi
 
 Every answer ends with a 📌 link to the **official German government website** so you can always verify the information.
 
+> **Note:** The retrieval system originally used ChromaDB with sentence-transformer embeddings, but was switched to a lighter TF-IDF + cosine similarity approach to remove the slow startup caused by loading a large embedding model on every run, while keeping retrieval accuracy solid for this document set.
+
 ---
 
 ## Features
@@ -24,7 +26,7 @@ Every answer ends with a 📌 link to the **official German government website**
 - **Chat interface** — Ask questions in natural language
 - **Upload documents** — Upload a government letter (PDF or image) and ask questions about it
 - **Three AI providers** — Choose between Claude (Anthropic), ChatGPT (OpenAI), or Ollama (free, runs locally)
-- **RAG pipeline** — Answers are grounded in official documents, not just AI guesswork
+- **RAG pipeline** — Answers are grounded in official documents (TF-IDF + cosine similarity retrieval), not just AI guesswork
 - **Official sources** — Every answer links to a relevant German government website
 - **Privacy-first** — API keys are never stored; Ollama option runs 100% on your own computer
 
@@ -102,12 +104,12 @@ This assistant references and links to the following official German government 
 
 ```
 german-bureaucracy-assistant/
-├── streamlit_app.py        # Main web app (Streamlit)
+├── streamlit_app.py        # Main web app (Streamlit) — RAG via TF-IDF + cosine similarity
 ├── app.py                  # Terminal version
-├── rag.py                  # RAG pipeline (ChromaDB)
+├── rag.py                  # Early prototype (ChromaDB) — superseded by TF-IDF retrieval in streamlit_app.py
 ├── requirements.txt
 ├── .env                    # Your API keys (not pushed to GitHub)
-└── documents/              # Knowledge base (loaded into ChromaDB)
+└── documents/              # Knowledge base (indexed with TF-IDF)
     ├── anmeldung.txt
     ├── residence_permit.txt
     ├── jobcenter.txt
@@ -129,8 +131,7 @@ german-bureaucracy-assistant/
 ## Built With
 
 - [Streamlit](https://streamlit.io) — Web interface
-- [ChromaDB](https://www.trychroma.com) — Vector database for RAG
-- [Sentence Transformers](https://www.sbert.net) — Text embeddings
+- [scikit-learn](https://scikit-learn.org) — TF-IDF vectorization & cosine similarity retrieval
 - [Anthropic Claude API](https://www.anthropic.com) — AI responses
 - [OpenAI API](https://openai.com) — AI responses
 - [Ollama](https://ollama.com) — Local AI option
